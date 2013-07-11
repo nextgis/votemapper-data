@@ -1,0 +1,77 @@
+title: Избирательная география Москвы
+subtitle: Выборы депутатов государственной думы 11 декабря 2011 года
+
+# Подложка
+baselayer:
+  url: "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+  attribution: "Map data © OpenStreetMap contributors"
+
+# Участники голосования в виде списка, в том порядке в котором
+# они перечислены в избирательном биллютене.
+# name: имя участника
+# color: цвет в HTML-нотации без решетки (#) вначале 
+participants:
+
+  - name: Справедливая Россия
+    color: "ab0040"
+
+  - name: ЛДПР
+    color: "5e83ea"
+
+  - name: Патриоты России
+    color: "e97300"
+
+  - name: КПРФ
+    color: "e80000"
+
+  - name: Яблоко
+    color: "00a100"
+
+  - name: Единая Россия
+    color: "5600e8"
+
+  - name: Правое Дело
+    color: "cc8d00"
+
+
+# Уровни голосования в виде списка
+# name: название уровня
+# geometry: тип геометрии
+#   area - территория
+#   site - точка расположения места голосования
+#   office - точка расположения избирательной комиссии
+# zoom: начиная с какого масштаба показывать уровень
+# datasource: источники данных
+levels:
+
+  - name: Избирательная группа
+    geometry: area
+    datasource:
+      # Оффициальные данные по голосованию
+      - type: csv
+        file: csv/level1.csv
+      # Геометрии объектов
+      - type: geojson
+        file: geojson/level1-polygon.geojson
+
+  - name: ТИК
+    geometry: area
+    zoom: 11
+    datasource:
+      # Оффициальные данные по голосованию
+      - type: csv
+        file: csv/level2.csv
+      # Геометрии объектов
+      - type: geojson
+        file: geojson/level2-polygon.geojson
+
+  - name: УИК
+    geometry: site
+    zoom: 14
+    datasource:
+      # здесь нет необходимости загружать геометрию отдельно,
+      # т.к. координаты мест голосования содержаться в полях
+      # site_x и site_y
+      type: csv
+      file: csv/level3.csv
+
