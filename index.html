@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <meta http-equiv='Content-Type' content='Type=text/html; charset=utf-8'>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.ie.css" /><![endif]-->
+    <style type="text/css">
+        .info {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            width: 300px;
+        }
+        .info h4 {
+            margin: 0 0 5px;
+            color: #777;
+        }
+
+        td.persent, td.count { text-align: right; }
+        td.persent:after { content: "%"; }
+
+    </style>
+
+    <script type="text/javascript">
+        var participants = {"1": {"color": [171, 0, 64], "name": "\u0421\u043f\u0440\u0430\u0432\u0435\u0434\u043b\u0438\u0432\u0430\u044f \u0420\u043e\u0441\u0441\u0438\u044f", "id": 1}, "2": {"color": [94, 131, 234], "name": "\u041b\u0414\u041f\u0420", "id": 2}, "3": {"color": [233, 115, 0], "name": "\u041f\u0430\u0442\u0440\u0438\u043e\u0442\u044b \u0420\u043e\u0441\u0441\u0438\u0438", "id": 3}, "4": {"color": [232, 0, 0], "name": "\u041a\u041f\u0420\u0424", "id": 4}, "5": {"color": [0, 161, 0], "name": "\u042f\u0431\u043b\u043e\u043a\u043e", "id": 5}, "6": {"color": [86, 0, 232], "name": "\u0415\u0434\u0438\u043d\u0430\u044f \u0420\u043e\u0441\u0441\u0438\u044f", "id": 6}, "7": {"color": [204, 141, 0], "name": "\u041f\u0440\u0430\u0432\u043e\u0435 \u0414\u0435\u043b\u043e", "id": 7}};
+        var levels = {"1": {"geometry": "area", "id": 1, "name": "\u0418\u0437\u0431\u0438\u0440\u0430\u0442\u0435\u043b\u044c\u043d\u0430\u044f \u0433\u0440\u0443\u043f\u043f\u0430", "zoom": null}, "2": {"geometry": "area", "id": 2, "name": "\u0422\u0418\u041a", "zoom": 11}, "3": {"geometry": "site", "id": 3, "name": "\u0423\u0418\u041a", "zoom": 14}};
+
+        var currentLevel;
+    </script>
+
+
+    
+
+</head>
+<body>
+    <div id="map" style="position: absolute; left: 0px; top: 0px; right: 0px; height: 100%; "></div>
+
+    <div id="info" class="info">
+        <h4 id="result-head">Общие итоги голосования</h4>
+        <table style="width: 100%;">
+            <tr>
+                <td style="background-color: #ab0040; width: 16px;">&nbsp;</td>
+                <td>
+                    <a href="#" onClick="setStyle('participant', 1); return false;">
+                    Справедливая Россия
+                    </a>
+                </td>
+                <td id="p-1-p" class="persent">&nbsp;</td>
+                <td id="p-1-c" class="count">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="background-color: #5e83ea; width: 16px;">&nbsp;</td>
+                <td>
+                    <a href="#" onClick="setStyle('participant', 2); return false;">
+                    ЛДПР
+                    </a>
+                </td>
+                <td id="p-2-p" class="persent">&nbsp;</td>
+                <td id="p-2-c" class="count">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="background-color: #e97300; width: 16px;">&nbsp;</td>
+                <td>
+                    <a href="#" onClick="setStyle('participant', 3); return false;">
+                    Патриоты России
+                    </a>
+                </td>
+                <td id="p-3-p" class="persent">&nbsp;</td>
+                <td id="p-3-c" class="count">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="background-color: #e80000; width: 16px;">&nbsp;</td>
+                <td>
+                    <a href="#" onClick="setStyle('participant', 4); return false;">
+                    КПРФ
+                    </a>
+                </td>
+                <td id="p-4-p" class="persent">&nbsp;</td>
+                <td id="p-4-c" class="count">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="background-color: #00a100; width: 16px;">&nbsp;</td>
+                <td>
+                    <a href="#" onClick="setStyle('participant', 5); return false;">
+                    Яблоко
+                    </a>
+                </td>
+                <td id="p-5-p" class="persent">&nbsp;</td>
+                <td id="p-5-c" class="count">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="background-color: #5600e8; width: 16px;">&nbsp;</td>
+                <td>
+                    <a href="#" onClick="setStyle('participant', 6); return false;">
+                    Единая Россия
+                    </a>
+                </td>
+                <td id="p-6-p" class="persent">&nbsp;</td>
+                <td id="p-6-c" class="count">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="background-color: #cc8d00; width: 16px;">&nbsp;</td>
+                <td>
+                    <a href="#" onClick="setStyle('participant', 7); return false;">
+                    Правое Дело
+                    </a>
+                </td>
+                <td id="p-7-p" class="persent">&nbsp;</td>
+                <td id="p-7-c" class="count">&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td colspan="4"></td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <a href="#" onClick="setStyle('turnout'); return false;">
+                        Явка
+                    </a>
+                </td>
+                <td id="turnout-p" class="persent">&nbsp;</td>
+                <td id="turnout-c" class="count">&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <a href="#" onClick="setStyle('absentee'); return false;">
+                        Открепительные
+                    </a>
+                </td>
+                <td id="absentee-p" class="persent">&nbsp;</td>
+                <td id="absentee-c" class="count">&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td colspan="4"></td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                    Итоговое место:
+                    <a href="#" onClick="setStyle('place', 1); return false;">1-е</a> | 
+                    <a href="#" onClick="setStyle('place', 2); return false;">2-е</a> |
+                    <a href="#" onClick="setStyle('place', 3); return false;">3-е</a>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div id="legend" class="info">
+        <h4 id="style-title"></h4>
+
+        <table style="width: 100%;">
+            <tr id="style-color"></tr>
+            <tr id="style-value"></tr> 
+        </table>
+
+    </div>
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.js"></script>
+    <script src="static/js/map.js"></script>
+
+
+    <script type="text/javascript">
+
+        var parameterStat = {"turnout": {"max": 100.0, "min": 33.48}, "absentee": {"max": 99.6, "min": 0.0}}
+        var participantVoteStat = {"1": {"max": 30.34, "min": 0.0}, "2": {"max": 48.55, "min": 0.0}, "3": {"max": 15.62, "min": 0.0}, "4": {"max": 42.86, "min": 0.0}, "5": {"max": 33.83, "min": 0.0}, "6": {"max": 97.44, "min": 12.84}, "7": {"max": 10.03, "min": 0.0}};
+        
+        // текущий способ раскраски полигонов и участник выборов
+        var currentStyle = 'participant';
+        var currentStyleP = 1;
+        var currentStyleBase;
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data © OpenStreetMap contributors',
+            opacity: 0.6
+        }).addTo(map);
+
+    </script>
+
+
+        <script type="text/javascript" src="level-1.js"></script>
+        <script type="text/javascript" src="level-2.js"></script>
+        <script type="text/javascript" src="level-3.js"></script>
+
+    <script type="text/javascript">
+        setStyle('turnout');
+        switchLevel(levels[1]);
+    </script>
+
+</body>
+</html>
